@@ -1,0 +1,50 @@
+@startuml
+start
+:Hi;
+:Hey;
+
+if(expression) then(true)
+    :stmt;
+else(false)
+    :stmt;
+endif
+
+
+if(expression) then(true)
+    :stmt;
+elseif(expression2) then(true)
+    :stmt2;
+else(false)
+    :stmt3;
+endif
+
+switch (which case?)
+case (A)
+    :Acase;
+case (B)
+    :Bcase;
+case (C)
+    :Ccase;
+endswitch
+
+while(expr?)
+    :inside while;
+endwhile
+
+repeat
+    :inside repeat;
+repeat while(has next?)
+
+
+repeat
+    :inside repeat;
+    if(expression) then(true)
+        break
+    endif
+repeat while(has next?)
+
+
+
+
+stop
+@enduml
