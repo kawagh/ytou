@@ -8,16 +8,17 @@ OPERATOR_MAP: dict[Any, str] = {ast.Eq: "=="}
 
 def main():
 
-    with open("./src.py", "r") as f:
+    with open("./ifelsesrc.py", "r") as f:
         c = f.read()
         print(c)
         p = ast.parse(c)
         d = ast.dump(p, indent=4)
 
-    # print(d)
+    print(d)
 
     for stmt in p.body:
         print(stmt)
+        # handle_stmt(stmt, f)
         if isinstance(stmt, ast.Assign):
             pass
             # ic(stmt.value.__dict__["value"])
@@ -30,6 +31,15 @@ def main():
 
         else:
             raise NotImplementedError()
+
+
+def handle_stmt(stmt, f):
+    if isinstance(stmt, ast.Assign):
+        handle_assign(stmt, f)
+    elif isinstance(stmt, ast.If):
+        handle_if(stmt, f)
+    else:
+        raise NotImplementedError()
 
 
 def handle_assign(stmt, f):
@@ -51,6 +61,7 @@ def handle_if(stmt, f):
     test = getattr(stmt, "test")
     body = getattr(stmt, "body")
     orelse = getattr(stmt, "orelse")
+    ic(orelse)
 
     var_name = getattr(test.left, "id")
     ops = getattr(test, "ops")
@@ -69,7 +80,10 @@ def handle_if(stmt, f):
             raise NotImplementedError()
             # handle_body()?
 
-    # TODO process orelse
+    if orelse:
+        f.write(f"else()\n")
+        for orelse_stmt in orelse:
+            handle_stmt(orelse_stmt, f)
 
     f.write("endif\n")
 

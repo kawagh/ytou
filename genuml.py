@@ -1,13 +1,13 @@
 import ast
 import subprocess
 
-from process_stmt import handle_assign, handle_if
+from process_stmt import handle_assign, handle_if, handle_stmt
 
 OPERATOR_MAP: dict[ast.AST, str] = {ast.Eq: "=="}
 
 
 def main():
-    with open("./src.py", "r") as f:
+    with open("./ifelsesrc.py", "r") as f:
         c = f.read()
 
     p = ast.parse(c)
@@ -19,12 +19,7 @@ def main():
         f.write("start\n")
 
         for stmt in p.body:
-            if isinstance(stmt, ast.Assign):
-                handle_assign(stmt, f)
-            elif isinstance(stmt, ast.If):
-                handle_if(stmt, f)
-            else:
-                raise NotImplementedError()
+            handle_stmt(stmt, f)
 
         f.write("stop\n")
         f.write("@enduml")
