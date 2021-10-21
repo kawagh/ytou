@@ -1,7 +1,9 @@
 import ast
 import subprocess
 
-from process_stmt import handle_assign
+from process_stmt import handle_assign, handle_if
+
+OPERATOR_MAP: dict[ast.AST, str] = {ast.Eq: "=="}
 
 
 def main():
@@ -18,8 +20,9 @@ def main():
 
         for stmt in p.body:
             if isinstance(stmt, ast.Assign):
-                vname, vvalue = handle_assign(stmt)
-                f.write(f":{vname}={vvalue};\n")
+                handle_assign(stmt, f)
+            elif isinstance(stmt, ast.If):
+                handle_if(stmt, f)
             else:
                 raise NotImplementedError()
 
